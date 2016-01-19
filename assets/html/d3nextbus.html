@@ -1,0 +1,319 @@
+
+
+<style type="text/css">
+	body {
+	  font: 10px sans-serif;
+	}
+
+	.bar rect {
+	  /*fill: forestgreen;*/
+	  shape-rendering: crispEdges;
+      opacity: 0.75;
+	}
+
+    .bar rect:hover {
+      opacity: 1;
+    }
+
+    rect {
+        -moz-transition: all 0.5s;
+        -webkit-transition: all 0.5s;
+        -o-transition: all 0.5s;
+        transition: all 0.5s;
+    }
+
+	.bar text {
+	  fill: #fff;
+	}
+
+	.axis path, .axis line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	}
+
+	span.underline{
+        border-bottom: 2px solid grey;
+		display:block;
+		color:#606060;
+    }
+	
+	.brush .extent {
+	    stroke: #000;
+	    fill-opacity: .125;
+	    shape-rendering: crispEdges;
+	}
+	
+	.d3-tip {
+	  line-height: 1.5;
+	  font-size: 15px;
+	  padding: 12px;
+	  background: rgba(0, 0, 0, 0.8);
+	  color: #fff;
+	  border-radius: 2px;
+	}
+	
+
+  
+
+</style>
+
+<div class="intro">
+ 	<span class="underline"><h2></h2></span>
+</div>
+
+<div class="headQ10">
+ 	<span style="color:forestgreen"><h2></h2></span>
+</div>
+
+<div class="headMed">
+ 	<span style="color:black"><h2></h2></span>
+</div>
+
+<div class="headQ90">
+ 	<span style="color:firebrick"><h2></h2></span>
+</div>
+
+
+<!-- Adding in numeric input -->
+<h3>
+  <label for="nMinutes" 
+         style="display: inline-block; width: 140px; text-align: right">
+         Prediction in Minutes: <span id="nMinutes-value"></span>
+  </label>
+  <input type="number" min="0" max="100" step="1" value="5" id="nMinutes">
+</h3>
+
+<br>
+
+
+<body>
+
+<!-- loading JS libraries -->
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+
+//defining math functions used in js
+var Quantile = function(values, quantile){
+	values.sort( function(a,b) {return a - b;} );
+	var q = Math.floor(values.length*quantile);
+    var ret = values[q];
+    return parseFloat(ret).toFixed(1);
+}
+
+var sumArray = function (array) {
+  for (var i = 0, sum = 0; i < array.length; sum += array[i++]);
+  return sum;
+};
+
+var earlyORlate = function(values, cutoff) {
+    late = [];
+    for(i=0; i<values.length; i++){
+        if(values[i]>cutoff) late.push(1)
+        else late.push(0)
+    };
+    return sumArray(late)/values.length
+}
+
+var fmtPct = function(x) {
+	if(x > 1) ret = Math.round(parseFloat(x))
+	else ret = parseFloat(x).toFixed(1)
+	return ret
+}
+
+// count numbers after decimal point
+var countDec = function(x) {
+    num = x.toString()
+  return (num.split('.')[1] || []).length
+}
+
+// return just 1 decimal at most
+var dec1 = function(x){
+    xn = Number(x)
+    if(countDec(xn) >= 1) xx = parseFloat(Math.abs(xn.toFixed(1)))
+    else xx = parseFloat(Math.abs(xn))
+    return xx
+}
+
+
+//format hover over text
+var fmtNumHover = function(x, earlyORlate){
+    if (earlyORlate=='late') tcol = 'red'
+    else tcol = 'green'
+    
+    if(x<=1) smartmin = " minute "
+    else smartmin = " minutes "
+
+    if(x==0) ret = "<span style=color:" + tcol + ">" + earlyORlate + "</span>"
+    else ret = "more than " + x + smartmin + "<span style=color:" + tcol + ">" + earlyORlate + "</span>"
+
+    return ret
+}
+
+var dataset2 =
+    d3.csv("../csv/cleanTripsOpt.csv", function(d) {
+        dataset2=d;
+        buildhist(dataset2, 5);
+    });
+
+//controls size of app
+var margin = {top: 10, right: 30, bottom: 50, left: 30},
+    width = 960 - margin.left - margin.right,
+    height = 350 - margin.top - margin.bottom;
+
+// A formatter for counts.
+var formatCount = d3.format(",.0f");
+
+//intitialize
+// via http://www.d3noob.org/2014/04/using-html-inputs-with-d3js.html
+d3.select("#nMinutes").on("input", function() {
+  d3.select("svg").remove();
+  buildhist(dataset2, +this.value);
+});
+
+var buildhist = function(adata, cutoff){
+
+    //taking just estimates where Minutes==cutoff
+    var mydata = []
+    for(i=0; i<adata.length; i++){
+        if (adata[i]["Minutes"]==cutoff) {
+            mydata.push(adata[i]["est"])
+        }
+    }
+
+    //defining dynamic bounds for histogram
+    var dmax = Math.max.apply(Math, mydata);
+    var dmin = Math.min.apply(Math, mydata);
+
+    //numOfBins = 40;
+    if((dmax-dmin)>8) var numOfBins = dmax-dmin
+    else var numOfBins = (dmax-dmin)*4; 
+
+    //find statistics for each sentenance
+    var busMedian = Quantile(mydata, 0.5);
+    var busQ90 = Quantile(mydata, 0.9);
+    var busQ10 = Quantile(mydata, 0.1);
+
+    var x = d3.scale.linear()
+        .domain([dmin, dmax])
+        .range([0, width]);
+
+    var data = d3.layout.histogram()
+        .bins(x.ticks(numOfBins))(mydata);
+    
+    var y = d3.scale.linear()
+        .domain([0, d3.max(data, function(d) { return d.y; })]) //when cutoff==10, 705
+        .range([height, 0]);
+    
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom").ticks(dmax-dmin);
+		
+	var tip = d3.tip()
+		  .attr('class', 'd3-tip')
+		  .offset(function(d) {
+			if(d.x<cutoff) xoff = 200
+			else xoff = 0
+			return [-10, xoff]
+		  })
+		  .html(function(d) {
+		  
+			var mydatagt = []
+			var mydatalt = []
+			for(i=0; i<mydata.length; i++){
+				if (mydata[i]>=d.x) mydatagt.push(mydata[i])
+				if (mydata[i]<=d.x+1) mydatalt.push(mydata[i])
+			}
+			
+
+			if(d.x>=cutoff) {
+				return "<span style='font-weight:bold; font-size:18px'>" +  fmtPct(d.y/mydata.length*100) +  "% </span>" + " chance bus will arrive " + parseFloat(dec1(d.x-cutoff)) + "-" + parseFloat(dec1(d.x-cutoff+1)) + " minutes <span style='color:red'> late </span>"  + "<br>" +
+				       "<span style='font-weight:bold; font-size:18px'>" + fmtPct(mydatagt.length/mydata.length*100) +  "% </span>" + " chance bus will arrive " + fmtNumHover(dec1(d.x-cutoff), 'late')
+			} else {
+				return "<span style='font-weight:bold; font-size:18px'>" +  fmtPct(d.y/mydata.length*100) +  "% </span>" + " chance bus will arrive " + parseFloat(dec1(cutoff-d.x-1)) + "-" + parseFloat(dec1(cutoff-d.x)) + " minutes <span style='color:green'> early </span>" + "<br>" +
+						"<span style='font-weight:bold; font-size:18px'>" + fmtPct(mydatalt.length/mydata.length*100) +  "% </span>" + " chance bus will arrive " + fmtNumHover(dec1(cutoff-d.x-1), 'early')
+		  }
+		  });
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+	svg.call(tip);
+	
+    var bar = svg.selectAll(".bar")
+        .data(data)
+        .enter().append("g")
+        .attr("class", "bar")
+        .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+
+        
+    bar.append("rect")
+        .attr("x", 0) //shifts bars
+        .attr("width", (width/data.length)*0.85) //adds spacing between bars. modified to handle x domains that start >0
+        .attr("height", function(d) {return height - y(d.y); })
+		.style("fill", function(dfff) {
+			if (dfff.x<cutoff) {col="forestgreen"}
+			else {col="firebrick"}
+			return col
+		})
+		.on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
+		 
+
+    bar.append("text")
+        .attr("dy", ".75em")
+        .attr("y", 6)
+        .attr("x", width/data.length / 2) 
+        .attr("text-anchor", "middle")
+        .text(function(d) { return Math.round(d.y/mydata.length*100)+'%'; });
+        //.text(function(d) { return formatCount(d.y); });
+    
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    // xAxis label
+svg.append("text") 
+    .attr("transform", "translate(" + width + " ," + (height + margin.bottom-15) +")")
+    .style("text-anchor", "end")
+    .text("Bus is late " + parseFloat(earlyORlate(mydata, cutoff)*100).toFixed(0) + "% of the time")
+    .style("font-size", "15px")
+    .style("fill", "firebrick");
+
+svg.append("text") 
+    .attr("transform", "translate(" + 0 + " ," + (height + margin.bottom-15) +")")
+    .style("text-anchor", "left")
+    .text("Bus is early " + parseFloat((1-earlyORlate(mydata, cutoff))*100).toFixed(0) + "% of the time")
+    .style("font-size", "15px")
+    .style("fill", "forestgreen");
+
+svg.append("text") 
+    .attr("transform", "translate(" + width/2 + " ," + (height + margin.bottom-15) +")")
+    .style("text-anchor", "middle")
+    .text("Minutes until bus arrival")
+    .style("font-size", "18px");
+    
+
+
+//printing sentences
+$(".intro h2").html("Nextbus prediction of " + "<font size=5>" + cutoff + "</font>" + " minutes really means:");
+$(".headQ10 h2").html("&nbsp&nbsp&nbsp&nbsp&nbsp" + "<font size=5>" + busQ10 + "</font>" + " minutes on an early day.");
+$(".headMed h2").html("&nbsp&nbsp&nbsp&nbsp&nbsp" + "<font size=5>" + busMedian + "</font>" +" minutes on an average day.");
+$(".headQ90 h2").html("&nbsp&nbsp&nbsp&nbsp&nbsp" + "<font size=5>" + busQ90 + "</font>" +" minutes on a late day.");
+
+
+};
+
+
+</script>
+
+
+
+</body>
