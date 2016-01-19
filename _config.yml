@@ -1,13 +1,13 @@
 # Site wide configuration
 
-title: andrew brooks
+title: robert loudon
 locale: en_US
 description: data science side projects, thoughts & experiments
 logo: ab-logo.jpg
 search: true
 
 #url:              http://localhost:4000
-url:               http://brooksandrew.github.io/simpleblog
+url:               http://rloudon.github.io
 
 
 # Jekyll configuration
@@ -34,13 +34,13 @@ exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.
 
 # Site owner
 owner:
-  name: andrew brooks
+  name: robert loudon
   avatar: bio-photo.jpg
-  email: andrewbrooksct@gmail.com
+  email: robert.a.loudon@gmail.com
   disqus-shortname: brooksandrewblog
   twitter: #username
   facebook: #username
-  github: brooksandrew
+  github: rloudon
   stackexchange: #http://stackoverflow.com/users/123456/username
   linkedin: #username
   instagram: #username
@@ -51,6 +51,5 @@ owner:
     analytics: "UA-52978786-2"
     verify:
     ad-client:
-    ad-slot: 
+    ad-slot:
   bing-verify:
-
