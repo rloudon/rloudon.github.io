@@ -13,7 +13,7 @@ url:               http://rloudon.github.io
 # Jekyll configuration
 
 permalink:   /:categories/:title/
-markdown:    kramdown
+markdown:    pandoc
 highlighter: pygments
 sass:
   sass_dir: _sass
