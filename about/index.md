@@ -9,17 +9,11 @@ image:
 
 ---
 
-I'm a Data Scientist at a smallish data mining consulting company in DC called [Elder Research].  I work on array of projects which have so far included the financial, tech and government oversight sectors.  Being a consultant and all, my work spans the full analytics life-cycle, which is broad, very broad. However, hacking code, machine learning and data visualization are where I feel most at home.
+I'm work in the insurance industry in market research.  I have a background with business analysis, corporate planning and strategy roles.  With an education in accounting and finance, I have worked in the property-casualty, healthcare technology, and health insurance industries.
 
-I write about data science side projects with occasional tangents for travel and photographs.
+I like to write about mapping, language, visualizations, and other cool things.
 
+Personal website: [rloudon.github.io]
 
-Personal website: [brooksandrew.github.io]
-
-[brooksandrew.github.io]: http://brooksandrew.github.io
-[Elder Research]: http://datamininglab.com/
-
-
-
-
-
+[rloudon.github.io]: http://rloudon.github.io
+[Linkedin]: https://www.linkedin.com/in/robert-a-loudon-09baab12

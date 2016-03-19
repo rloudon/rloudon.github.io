@@ -1,8 +1,8 @@
 # Site wide configuration
 
-title: robert loudon
+title: Robert Loudon
 locale: en_US
-description: data science side projects, thoughts & experiments
+description: a collection of thoughts and musings
 logo: ab-logo.jpg
 search: true
 
@@ -13,7 +13,7 @@ url:               http://rloudon.github.io
 # Jekyll configuration
 
 permalink:   /:categories/:title/
-markdown:    pandoc
+markdown:    kramdown
 highlighter: pygments
 sass:
   sass_dir: _sass
@@ -37,18 +37,18 @@ owner:
   name: robert loudon
   avatar: bio-photo.jpg
   email: robert.a.loudon@gmail.com
-  disqus-shortname: brooksandrewblog
+  disqus-shortname: rloudonblog
   twitter: #username
   facebook: #username
   github: rloudon
   stackexchange: #http://stackoverflow.com/users/123456/username
-  linkedin: #username
+  linkedin: https://www.linkedin.com/in/robert-a-loudon-09baab12
   instagram: #username
   flickr: #username
   tumblr: #username
   google:
     plus: #username
-    analytics: "UA-52978786-2"
+    analytics: #"UA-52978786-2"
     verify:
     ad-client:
     ad-slot:
