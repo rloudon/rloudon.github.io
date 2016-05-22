@@ -1,27 +1,11 @@
 ---
-title: "In Principio"
-output: html_document
----
-
----
-title: "MadR - Portable R Shiny Apps"
+title: "Welcome One and All"
 subtitle: 
-author: "Robert Loudon"
-date: "January 20, 2016"
-output: 
-  knitrBootstrap::simple_document:
-    toc: true
-    theme: flatly
-    show_code: FALSE
-    bootstrap.type: simple
-    bootstrap.show.warning: FALSE
-    bootstrap.show.message: FALSE
-    bootstrap.show.error: FALSE
-    highlight: github
-    theme.chooser: FALSE
-    custom.header: before_body.html
-bootstrap.thumbnail: FALSE
-
+categories: articles
+tags: [admin, general]
+date: 2016-05-22
+comments: true
+share: true
 ---
 
 # Portable R with Shiny
