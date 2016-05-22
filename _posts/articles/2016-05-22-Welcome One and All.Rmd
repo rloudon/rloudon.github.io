@@ -19,7 +19,7 @@ share: true
 Bonus: TopoJSON mapping versus Shapefiles
 
 ```{r Global Chunk Setup, include=FALSE}
-knitr::opts_chunk$set(comment = NA, bootstrap.show.code = FALSE, bootstrap.show.output = FALSE, message=F, warning=F, error=F)
+knitr::opts_chunk$set(comment = NA, message=F, warning=F, error=F)
 
 ```
 
