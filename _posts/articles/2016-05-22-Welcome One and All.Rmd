@@ -1,9 +1,9 @@
 ---
+layout: post
 title: "Welcome One and All"
-subtitle: 
+date: 2016-05-22
 categories: articles
 tags: [admin, general]
-date: 2016-05-22
 comments: true
 share: true
 ---
