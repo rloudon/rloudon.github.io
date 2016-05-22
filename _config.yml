@@ -3,7 +3,7 @@
 title: Robert Loudon
 locale: en_US
 description: a collection of thoughts and musings
-logo: bruce.jpg
+logo: bruce.jpeg
 search: true
 
 #url:              http://localhost:4000
@@ -35,7 +35,7 @@ exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.
 # Site owner
 owner:
   name: robert loudon
-  avatar: bruce.jpg
+  avatar: bruce.jpeg
   email: robert.a.loudon@gmail.com
   disqus-shortname: rloudonblog
   twitter: #username
