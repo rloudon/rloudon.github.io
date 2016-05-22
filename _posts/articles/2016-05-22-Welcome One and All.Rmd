@@ -8,7 +8,7 @@ comments: true
 share: true
 ---
 
-# Portable R with Shiny
+### Portable R with Shiny
 
 1. Preparing
 
@@ -16,14 +16,8 @@ share: true
 
 3. Publish
 
-Bonus: TopoJSON mapping versus Shapefiles
 
-```{r Global Chunk Setup, include=FALSE}
-knitr::opts_chunk$set(comment = NA, message=F, warning=F, error=F)
-
-```
-
-## Test
+### Test
 
 ```{r results = 'asis', comment = NA, echo=F, results="asis"}
 require(rCharts)
@@ -44,19 +38,19 @@ summary(cars$dist)
 
 
 
-## R Markdown
+### R Markdown
 
 This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown.
 
 
 
-# Slide with R Code and Output
+### Slide with R Code and Output
 
 ```{r states, echo=F}
 summary(cars)
 ```
 
-# Leaflet HTMLWidget
+### Leaflet HTMLWidget
 
 ```{r, echo=F}
 library(leaflet)
@@ -67,7 +61,7 @@ m <- leaflet() %>%
 m  # Print the map
 ```
 
-# Parallel Coordinates
+### Parallel Coordinates
 
 ```{r echo = F, message = F, comment = NA, results="asis"}
 library(rCharts)
@@ -78,7 +72,7 @@ m1$set(pointSize = 0, lineWidth = 1)
 m1$show("iframesrc", cdn = TRUE)
 ```
 
-# NVD3 Plot Iframe
+### NVD3 Plot Iframe
 
 ```{r rcht, message=FALSE, echo=FALSE, results='asis'}   
 library(rCharts)
@@ -87,7 +81,7 @@ n1 <- rPlot(mpg ~ wt | cyl, data = mtcars, color = "gear", type = "point")
 n1$show("iframesrc", cdn = TRUE)
 ```
 
-# DataTable
+### DataTable
 
 ```{r echo = F, message = F, comment = NA, results="asis", cache=F}
 library(xtable)
