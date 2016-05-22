@@ -5,7 +5,7 @@ title: About me
 tags: [Jekyll, theme, simple, minimal, minimalism, responsive]
 modified: 2013-09-13
 image:
-  feature: aboutphoto_milfordsound_compressed2.jpg
+  feature: orion.jpg
 
 ---
 
@@ -16,4 +16,4 @@ I like to write about mapping, language, visualizations, and other cool things.
 Personal website: [rloudon.github.io]
 
 [rloudon.github.io]: http://rloudon.github.io
-[Linkedin]: https://www.linkedin.com/in/robert-a-loudon-09baab12
+[Linkedin]: http://www.linkedin.com/in/robert-a-loudon-09baab12
