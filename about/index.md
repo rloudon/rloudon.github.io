@@ -9,9 +9,7 @@ image:
 
 ---
 
-I'm work in the insurance industry in market research.  I have a background with business analysis, corporate planning and strategy roles.  With an education in accounting and finance, I have worked in the property-casualty, healthcare technology, and health insurance industries.
-
-I like to write about mapping, language, visualizations, and other cool things.
+A humble showcase of work with R.
 
 Personal website: [rloudon.github.io]
 
